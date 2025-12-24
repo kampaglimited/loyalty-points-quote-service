@@ -1,0 +1,11 @@
+http:
+  port: 8080
+
+services:
+  fx:
+    url: "http://localhost:8081/v1/fx-rate/"
+    timeout: 2000
+    retries: 3
+  promo:
+    url: "http://localhost:8082/v1/promos/"
+    timeout: 1000
