@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
+import org.junit.jupiter.api.Tag;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
@@ -48,6 +50,7 @@ public class QuoteServiceComponentTest {
     }
 
     @Test
+    @Tag("smoke")
     @DisplayName("Should calculate points correctly for valid request (SILVER tier)")
     void testSuccessfulQuote(Vertx vertx, VertxTestContext testContext) {
         fxServer.stubFor(get(urlEqualTo("/v1/fx-rate/AED"))
@@ -86,6 +89,7 @@ public class QuoteServiceComponentTest {
     }
 
     @Test
+    @Tag("integration")
     @DisplayName("Should retry FX service on failure and succeed if it eventually returns 200")
     void testFxRetrySuccess(Vertx vertx, VertxTestContext testContext) {
         fxServer.stubFor(get(urlEqualTo("/v1/fx-rate/EUR"))
@@ -117,6 +121,7 @@ public class QuoteServiceComponentTest {
     }
 
     @Test
+    @Tag("integration")
     @DisplayName("Should handle Promo service timeout with default values")
     void testPromoTimeout(Vertx vertx, VertxTestContext testContext) {
         fxServer.stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200).withBody("{\"rate\": 1.0}")));
@@ -283,6 +288,7 @@ public class QuoteServiceComponentTest {
     }
 
     @Test
+    @Tag("full")
     @DisplayName("Should cap total points at 50,000")
     void testPointCap(Vertx vertx, VertxTestContext testContext) {
         fxServer.stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200).withBody("{\"rate\": 1.0}")));

@@ -36,8 +36,17 @@ public class QuoteServiceVerticle extends AbstractVerticle {
                 .setFormat("yaml")
                 .setConfig(new JsonObject().put("path", "application.yaml"));
 
+        ConfigStoreOptions envStore = new ConfigStoreOptions()
+                .setType("env");
+
+        ConfigStoreOptions sysStore = new ConfigStoreOptions()
+                .setType("sys");
+
         ConfigRetriever retriever = ConfigRetriever.create(vertx,
-                new ConfigRetrieverOptions().addStore(fileStore));
+                new ConfigRetrieverOptions()
+                        .addStore(fileStore)
+                        .addStore(envStore)
+                        .addStore(sysStore));
 
         retriever.getConfig(ar -> {
             if (ar.succeeded()) {
